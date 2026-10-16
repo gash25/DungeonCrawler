@@ -106,8 +106,12 @@ export class WorldView {
           let edge = false;
           for (let dy = -1; dy <= 1 && !edge; dy++) for (let dx = -1; dx <= 1; dx++) if (!isWall(x + dx, y + dy)) { edge = true; break; }
           if (!edge) continue;
-          const hh = 1 + rng.range(-0.04, 0.08);
-          m4.compose(new THREE.Vector3(x, (WALL_H * hh) / 2 - 0.02, y), q.identity(), new THREE.Vector3(1, hh, 1));
+          const rough = biome.wallStyle === 'cave' || biome.wallStyle === 'ice';
+          const hh = 1 + (rough ? rng.range(-0.12, 0.25) : rng.range(-0.04, 0.08));
+          if (rough) q.setFromAxisAngle(new THREE.Vector3(0, 1, 0), rng.range(-0.35, 0.35));
+          else q.identity();
+          const sxz = rough ? rng.range(1.02, 1.18) : 1;
+          m4.compose(new THREE.Vector3(x, (WALL_H * hh) / 2 - 0.02, y), q, new THREE.Vector3(sxz, hh, sxz));
           wallMesh.setMatrixAt(wi, m4);
           const v = rng.range(0.82, 1.1);
           wallMesh.setColorAt(wi++, col.setRGB(v, v, v));

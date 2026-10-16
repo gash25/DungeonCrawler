@@ -250,11 +250,14 @@ input[type=range] { accent-color: var(--accent); width: 180px; }
   .hud-top-right { top: 8px; right: 8px; }
   .icon-btn { width: 36px; height: 36px; font-size: 16px; }
   .hud-bottom { gap: 4px; padding: 5px; bottom: calc(6px + var(--safe-b)); max-width: 98vw; flex-wrap: wrap; justify-content: center; }
-  .slot { width: 48px; height: 48px; font-size: 21px; }
-  .slot.small { width: 40px; height: 40px; font-size: 16px; }
+  .slot { width: 40px; height: 40px; font-size: 18px; }
+  .slot.small { width: 38px; height: 38px; font-size: 15px; }
+  .slot .key { font-size: 9px; } .slot .cost, .slot .count { font-size: 10px; }
+  .hud-bottom .sep { display: none; }
+  .hud-bottom { gap: 3px; left: 0; right: 0; margin: 0 auto; width: fit-content; transform: none; }
   .log { width: 62vw; max-height: 70px; font-size: 12px; bottom: calc(118px + var(--safe-b)); left: 8px; }
-  .floor-title { font-size: 11px; }
-  .hud-top-center { top: 64px; }
+  .floor-title { display: none; }
+  .hud-top-center { top: 128px; }
   .inv-grid, .equip-grid { grid-template-columns: repeat(5, 52px); }
   .islot { width: 52px; height: 52px; font-size: 20px; }
   .toast-wrap { top: 170px; }

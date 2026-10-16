@@ -139,7 +139,7 @@ export function buildPlayer(cls: ClassKey): Rig {
   if (cls === 'warrior') {
     b.mesh(head, G.cyl(), metal, [0, 0.04, 0], [0.27, 0.26, 0.27]);
     b.mesh(head, G.box(), dark, [0, 0.02, 0.13], [0.2, 0.04, 0.04]);
-    b.mesh(head, G.cone(), cloth, [0, 0.24, -0.04], [0.07, 0.3, 0.2], [-0.4, 0, 0]);
+    b.mesh(head, G.box(), cloth, [0, 0.24, -0.02], [0.04, 0.16, 0.3], [-0.2, 0, 0]);
     b.mesh(body, G.sphere(), metal, [-0.26, 1.08, 0], [0.18, 0.14, 0.18]);
     b.mesh(body, G.sphere(), metal, [0.26, 1.08, 0], [0.18, 0.14, 0.18]);
     // sword in right hand

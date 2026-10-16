@@ -82,10 +82,10 @@ const TELE_FRAG = /* glsl */ `
     vec2 c = abs(vUv - 0.5) * 2.0;
     float e = max(c.x, c.y);
     float border = smoothstep(0.75, 0.95, e);
-    float pulse = 0.55 + 0.45 * sin(uTime * 8.0);
-    float stripes = step(0.5, fract((vUv.x + vUv.y) * 4.0 - uTime * 1.5)) * 0.25;
-    float a = (border * 0.9 + 0.25 + stripes) * pulse;
-    gl_FragColor = vec4(uColor * a * 2.5, a);
+    float pulse = 0.6 + 0.4 * sin(uTime * 8.0);
+    float stripes = step(0.5, fract((vUv.x + vUv.y) * 3.0 - uTime * 1.2)) * 0.18;
+    float a = clamp(0.42 + stripes + border * 0.5, 0.0, 0.95) * pulse;
+    gl_FragColor = vec4(uColor * (1.0 + border * 3.0), a);
   }`;
 
 export class Renderer {
@@ -122,6 +122,7 @@ export class Renderer {
   private camDistTarget = 10.5;
   private camTarget = new THREE.Vector3();
   private shake = 0;
+  private portrait: boolean | null = null;
   private hurt = 0;
   demo = false;
   quality: Quality;
@@ -167,7 +168,7 @@ export class Renderer {
     // Telegraph danger tiles
     this.teleMat = new THREE.ShaderMaterial({
       vertexShader: TELE_VERT, fragmentShader: TELE_FRAG, uniforms: { uTime: { value: 0 }, uColor: { value: new THREE.Color(1, 0.12, 0.05) } },
-      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      transparent: true, depthWrite: false,
     });
     const tg = new THREE.PlaneGeometry(0.96, 0.96);
     tg.rotateX(-Math.PI / 2);
@@ -230,6 +231,12 @@ export class Renderer {
   }
 
   resize(w: number, h: number): void {
+    const portrait = w / h < 1;
+    const base = portrait ? 19 : 10.5;
+    if (this.portrait !== portrait) {
+      this.camDistTarget = this.camDist = base;
+      this.portrait = portrait;
+    }
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.gl.setSize(w, h);
@@ -567,7 +574,7 @@ export class Renderer {
   }
 
   zoom(delta: number): void {
-    this.camDistTarget = Math.max(7, Math.min(22, this.camDistTarget + delta));
+    this.camDistTarget = Math.max(7, Math.min(26, this.camDistTarget + delta));
   }
 
   setHover(tile: Vec | null, kind: 'move' | 'enemy' | 'target' | 'none'): void {
@@ -752,7 +759,7 @@ export class Renderer {
           m.emissiveIntensity = Math.max(bi, v.flash * 2.5);
         } else if (tele) {
           m.emissive.setRGB(1, 0.15, 0.05);
-          m.emissiveIntensity = Math.max(bi, pulse * 1.6);
+          m.emissiveIntensity = Math.max(bi, pulse * 0.7);
         } else {
           m.emissive.copy(base);
           m.emissiveIntensity = bi;
